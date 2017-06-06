@@ -20,5 +20,4 @@ abstract class MessageWithText {
 
     open fun getString(prefName: String) =
             String(bundle.getString(prefName).toByteArray(charset("ISO-8859-1")), charset("UTF-8"))
-
 }

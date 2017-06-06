@@ -1,6 +1,7 @@
 package com.ng.botstat.model
 
 import com.ng.botstat.util.Command
+import com.ng.botstat.util.CommandRegister
 import mu.KotlinLogging
 import org.telegram.telegrambots.api.objects.Message
 
@@ -23,9 +24,10 @@ class MessageParser private constructor() {
         logger.info { "message: $message" }
         val type =
                 when (message.text) {
-                    Command.HELP.value -> Command.HELP
-                    Command.REG.value -> Command.REG
-                    Command.ROLL.value -> Command.ROLL
+                    Command.HELP.value, CommandRegister.HELP.value -> Command.HELP
+                    Command.REG.value, CommandRegister.REG.value -> Command.REG
+                    Command.ROLL.value, CommandRegister.ROLL.value -> Command.ROLL
+                    Command.STAT.value, CommandRegister.STAT.value -> Command.STAT
                     else -> Command.UNKNOWN_COMMAND
                 }
 

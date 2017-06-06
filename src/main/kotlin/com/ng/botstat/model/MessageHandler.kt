@@ -13,6 +13,7 @@ import org.telegram.telegrambots.api.methods.send.SendMessage
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.annotation.Nullable
 
 /**
  * Created by NG on 05.06.17.
@@ -113,6 +114,20 @@ class MessageHandler private constructor(bot: MessageSender, repo: Repository) {
                         return
                     }
 
+                })
+            }
+
+            Command.STAT -> {
+                repo.getUsers(message.chatId, object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot?) {
+                        val users = getUsers(snapshot)
+                        logger.info { "users: $users" }
+                        messageToSend.text = "text _ text\ntext"
+                        messageToSend.send()
+                    }
+
+                    override fun onCancelled(error: DatabaseError?) {
+                    }
                 })
             }
 
