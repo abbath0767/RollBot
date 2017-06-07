@@ -122,8 +122,8 @@ class MessageHandler private constructor(bot: MessageSender, repo: Repository) {
                     override fun onDataChange(snapshot: DataSnapshot?) {
                         val users = getUsers(snapshot)
                         logger.info { "users: $users" }
-                        messageToSend.text = "text _ text\ntext"
-                        messageToSend.send()
+
+                        calculateAndSendTop(users, messageToSend)
                     }
 
                     override fun onCancelled(error: DatabaseError?) {
@@ -222,6 +222,13 @@ class MessageHandler private constructor(bot: MessageSender, repo: Repository) {
                 logger.info { "error: $error" }
             }
         })
+    }
+
+    private fun calculateAndSendTop(users: List<DBUser>, messageToSend: SendMessage) {
+        logger.info { "calculateAndSendTop" }
+
+        messageToSend.text = AnswerStat(users).getText()
+        messageToSend.send()
     }
 
     private fun SendMessage.send() {

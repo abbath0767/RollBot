@@ -15,6 +15,9 @@ abstract class MessageWithText {
     val help = "help"
     val unknown = "UNKNOWN"
     val already_rolled = "ALREADY_ROLLED"
+    val top = "TOP"
+    val forEach = "FOR_EACH"
+    val over = "OVER"
 
     abstract fun getText(): String
 

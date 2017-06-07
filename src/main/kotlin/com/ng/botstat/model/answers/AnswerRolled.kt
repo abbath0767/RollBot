@@ -18,7 +18,7 @@ class AnswerRolled(userName: String) {
     val rollMessageId: Int
 
     init {
-        rollMessageId = rand.nextInt(1)
+        rollMessageId = rand.nextInt(2)
         bundle = ResourceBundle.getBundle("rolled_answer_" + rollMessageId.toString(), Locale("ru", "RU"))
         initText()
 
