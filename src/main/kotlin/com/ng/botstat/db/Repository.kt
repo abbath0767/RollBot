@@ -13,4 +13,6 @@ interface Repository {
     fun updateUser(newUser: DBUser)
     fun checkDate(chatId: Long, listener: ValueEventListener)
     fun updateRollDate(chatId: Long, time: Long)
+    fun getCurrentRolledUser(chatId: Long, valueEventListener: ValueEventListener)
+    fun saveRolledUserName(chatId: Long, userName: String)
 }

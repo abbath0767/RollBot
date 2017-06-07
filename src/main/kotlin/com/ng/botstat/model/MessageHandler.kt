@@ -13,7 +13,6 @@ import org.telegram.telegrambots.api.methods.send.SendMessage
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import javax.annotation.Nullable
 
 /**
  * Created by NG on 05.06.17.
@@ -94,8 +93,27 @@ class MessageHandler private constructor(bot: MessageSender, repo: Repository) {
                                 logger.info { "difference: $days\nlastRoll: $lastRoll" }
 
                                 if (days == 0L) {
-                                    messageToSend.text = AnswerErrorRolled(message.userName).getText()
-                                    messageToSend.send()
+
+                                    repo.getCurrentRolledUser(message.chatId, object : ValueEventListener {
+                                        override fun onDataChange(snapshot: DataSnapshot?) {
+                                            var currentRolledUser = "currentRolledUser. empty value"
+
+                                            if (snapshot?.exists() == false) {
+                                                logger.info { "not exists currentRollUser" }
+                                            } else {
+                                                currentRolledUser = snapshot?.getValue(String::class.java) ?: "snapshot is null"
+                                            }
+
+                                            messageToSend.text = AnswerErrorRolled(message.userName, currentRolledUser).getText()
+                                            messageToSend.send()
+                                        }
+
+                                        override fun onCancelled(error: DatabaseError?) {
+                                            messageToSend.text = error.toString()
+                                            messageToSend.send()
+                                        }
+
+                                    })
                                     return
                                 } else {
                                     logger.info { "update roll date" }
@@ -154,6 +172,8 @@ class MessageHandler private constructor(bot: MessageSender, repo: Repository) {
 
                 incrementRolled(rolledUser)
 
+                saveCurrentRollUser(message.chatId, rolledUser)
+
                 publishRollResult(messageToSend, rolledUser.userName)
             }
 
@@ -179,12 +199,17 @@ class MessageHandler private constructor(bot: MessageSender, repo: Repository) {
         }
     }
 
+    private fun saveCurrentRollUser(chatId: Long, rolledUser: DBUser) {
+        repo.saveRolledUserName(chatId, rolledUser.userName)
+    }
+
     private fun getUsers(snapshot: DataSnapshot?): List<DBUser> {
         val users = mutableListOf<DBUser>()
 
         if (snapshot != null) {
             snapshot.children.forEach {
-                if (it.key != DBTable.LAST_ROLL.tableName) {
+                logger.info { "children key: ${it.key}" }
+                if (it.key != DBTable.LAST_ROLL.tableName && it.key != DBTable.LAST_USER_ROLL.tableName) {
                     val user = it.getValue(DBUser::class.java)
                     logger.info { "add user $user" }
                     users.add(user)

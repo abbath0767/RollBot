@@ -98,4 +98,25 @@ class FirebaseRepository private constructor(): Repository {
                 .child(chatId.toString())
                 .updateChildren(timeMap)
     }
+
+    override fun getCurrentRolledUser(chatId: Long, valueEventListener: ValueEventListener) {
+        val userRef = database.getReference(DBTable.CHATS.tableName)
+
+        userRef
+                .child(chatId.toString())
+                .child(DBTable.LAST_USER_ROLL.tableName)
+                .addListenerForSingleValueEvent(valueEventListener)
+    }
+
+    override fun saveRolledUserName(chatId: Long, userName: String) {
+        val userRef = database.getReference(DBTable.CHATS.tableName)
+
+        val rollUserMap = mapOf(DBTable.LAST_USER_ROLL.tableName to userName)
+
+        logger.info { "update last roll user: $userName" }
+
+        userRef
+                .child(chatId.toString())
+                .updateChildren(rollUserMap)
+    }
 }
