@@ -18,7 +18,9 @@ class AnswerRolled(userName: String) {
     val rollMessageId: Int
 
     init {
-        rollMessageId = rand.nextInt(2)
+        //todo need another way to get count of properties files
+        rollMessageId = rand.nextInt(5)
+        logger.info { "roll : $rollMessageId" }
         bundle = ResourceBundle.getBundle("rolled_answer_" + rollMessageId.toString(), Locale("ru", "RU"))
         initText()
 
