@@ -16,6 +16,7 @@ class MessageParser private constructor() {
         val INSTANCE = MessageParser()
     }
 
+    //todo change this shit! by Ivan {}
     companion object {
         val instance: MessageParser by lazy { Holder.INSTANCE }
     }

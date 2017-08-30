@@ -23,7 +23,6 @@ fun main(args: Array<String>) {
     initializeBot()
 }
 
-//todo first build and after init!
 fun initDb() {
     FirebaseRepository.instance.database
 }

@@ -27,7 +27,7 @@ class FirebaseRepository private constructor(): Repository {
     val database : FirebaseDatabase
 
     init {
-        var serviceAccount =  FileInputStream(BotParams.KEY_PATH.value)
+        val serviceAccount =  FileInputStream(BotParams.KEY_PATH.value)
 
         val options = FirebaseOptions.Builder()
                 .setCredential(FirebaseCredentials.fromCertificate(serviceAccount))

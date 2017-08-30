@@ -16,10 +16,11 @@ import org.telegram.telegrambots.bots.TelegramLongPollingCommandBot
 class SimpleBot : TelegramLongPollingCommandBot(), MessageSender {
 
     companion object : KLogging()
-    var parser = MessageParser.instance
-    var repository = FirebaseRepository.instance
-    val messageHandler = MessageHandler.getInstence(this, repository)
-    var emptyMessage: Message = Message()
+
+    val parser = MessageParser.instance
+    val repository = FirebaseRepository.instance
+    val messageHandler = MessageHandler.getInstance(this, repository)
+    val emptyMessage: Message = Message()
 
     override fun getBotUsername(): String {
         logger.info { "getBotUserName" }

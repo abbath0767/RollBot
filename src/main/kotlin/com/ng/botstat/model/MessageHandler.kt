@@ -17,17 +17,14 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by NG on 05.06.17.
  */
-class MessageHandler private constructor(bot: MessageSender, repo: Repository) {
-
-    private val repo = repo
-    private val bot = bot
+class MessageHandler private constructor(private val bot: MessageSender, private val repo: Repository) {
 
     private val logger = KotlinLogging.logger {}
 
     companion object {
         private var instance: MessageHandler? = null
 
-        fun getInstence(bot: MessageSender, repo: Repository): MessageHandler {
+        fun getInstance(bot: MessageSender, repo: Repository): MessageHandler {
             if (instance == null)
                 instance = MessageHandler(bot, repo)
 
@@ -35,6 +32,7 @@ class MessageHandler private constructor(bot: MessageSender, repo: Repository) {
         }
     }
 
+    //todo SIMPLEST this!
     fun handleMessage(message: MessageFromUser) {
         val messageToSend = SendMessage()
         messageToSend.setChatId(message.chatId)
