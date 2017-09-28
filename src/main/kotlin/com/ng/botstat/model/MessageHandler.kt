@@ -6,6 +6,7 @@ import com.google.firebase.database.ValueEventListener
 import com.ng.botstat.bot.MessageSender
 import com.ng.botstat.db.Repository
 import com.ng.botstat.model.answers.*
+import com.ng.botstat.util.AlarmManager
 import com.ng.botstat.util.Command
 import com.ng.botstat.util.DBTable
 import mu.KotlinLogging
@@ -17,22 +18,26 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by NG on 05.06.17.
  */
-class MessageHandler private constructor(private val bot: MessageSender, private val repo: Repository) {
+class MessageHandler private constructor(private val bot: MessageSender,
+                                         private val repo: Repository,
+                                         private val alarmManager: AlarmManager) {
 
     private val logger = KotlinLogging.logger {}
 
     companion object {
         private var instance: MessageHandler? = null
 
-        fun getInstance(bot: MessageSender, repo: Repository): MessageHandler {
+        fun getInstance(bot: MessageSender, repo: Repository, alarmManager: AlarmManager): MessageHandler {
             if (instance == null)
-                instance = MessageHandler(bot, repo)
+                instance = MessageHandler(bot, repo, alarmManager)
 
             return instance!!
         }
+
+        const val INVALID_MESSAGE = "INVALID_MESSAGE"
+        const val EMPTY_STRING_FLAG = "EMPTY_STRING_FLAG"
     }
 
-    //todo SIMPLEST this!
     fun handleMessage(message: MessageFromUser) {
         val messageToSend = SendMessage()
         messageToSend.setChatId(message.chatId)
@@ -145,6 +150,21 @@ class MessageHandler private constructor(private val bot: MessageSender, private
                     override fun onCancelled(error: DatabaseError?) {
                     }
                 })
+            }
+
+            Command.ALARM -> {
+                logger.info { "alarm command: ${message.toString()}" }
+                logger.info { "alarm command: ${message.comment}" }
+
+                if (alarmManager.timeIsValid(message.comment ?: INVALID_MESSAGE)) {
+
+                } else {
+                    messageToSend.text = AlarmError(message.userName, message.comment ?: EMPTY_STRING_FLAG).getText()
+                    messageToSend.send()
+                }
+
+                messageToSend.text = "time is: ${message.comment}"
+                messageToSend.send()
             }
 
             else -> {

@@ -3,13 +3,7 @@ package com.ng.botstat
 import com.ng.botstat.bot.SimpleBot
 import org.telegram.telegrambots.ApiContextInitializer
 import org.telegram.telegrambots.TelegramBotsApi
-import java.io.FileInputStream
-import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseCredentials
-import com.google.firebase.FirebaseOptions
-import com.google.firebase.database.FirebaseDatabase
 import com.ng.botstat.db.FirebaseRepository
-import com.ng.botstat.model.DBUser
 
 
 /**

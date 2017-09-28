@@ -14,4 +14,4 @@ data class DBUser(val cahtId: Long = -1L, val pidorCount: Int = -1,  val userNam
     }
 }
 
-data class MessageFromUser(val type: Command, val chatId: Long, val userName: String)
+data class MessageFromUser(val type: Command, val chatId: Long, val userName: String, val comment: String? = null)

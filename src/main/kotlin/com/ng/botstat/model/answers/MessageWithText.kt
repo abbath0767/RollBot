@@ -18,6 +18,7 @@ abstract class MessageWithText {
     val top = "TOP"
     val forEach = "FOR_EACH"
     val over = "OVER"
+    val alarmError = "ALARM_ERROR"
 
     abstract fun getText(): String
 
