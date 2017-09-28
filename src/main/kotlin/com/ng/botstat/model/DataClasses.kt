@@ -14,4 +14,14 @@ data class DBUser(val cahtId: Long = -1L, val pidorCount: Int = -1,  val userNam
     }
 }
 
-data class MessageFromUser(val type: Command, val chatId: Long, val userName: String, val comment: String? = null)
+open class MessageFromUser(val type: Command, val chatId: Long, val userName: String) {
+    override fun toString(): String {
+        return "MessageFromUser(type=$type, chatId=$chatId, userName='$userName')"
+    }
+}
+open class MessageFromUserWithComment(type: Command,chatId: Long, userName: String, val comment: String)
+    : MessageFromUser(type, chatId, userName) {
+    override fun toString(): String {
+        return "MessageFromUserWithComment(comment='$comment'), ${super.toString()}"
+    }
+}

@@ -33,9 +33,6 @@ class MessageHandler private constructor(private val bot: MessageSender,
 
             return instance!!
         }
-
-        const val INVALID_MESSAGE = "INVALID_MESSAGE"
-        const val EMPTY_STRING_FLAG = "EMPTY_STRING_FLAG"
     }
 
     fun handleMessage(message: MessageFromUser) {
@@ -153,13 +150,14 @@ class MessageHandler private constructor(private val bot: MessageSender,
             }
 
             Command.ALARM -> {
+                message as MessageFromUserWithComment
                 logger.info { "alarm command: ${message.toString()}" }
                 logger.info { "alarm command: ${message.comment}" }
 
-                if (alarmManager.timeIsValid(message.comment ?: INVALID_MESSAGE)) {
+                if (alarmManager.timeIsValid(message.comment)) {
 
                 } else {
-                    messageToSend.text = AlarmError(message.userName, message.comment ?: EMPTY_STRING_FLAG).getText()
+                    messageToSend.text = AlarmError(message.userName, message.comment).getText()
                     messageToSend.send()
                 }
 
