@@ -21,7 +21,7 @@ class SimpleBot : TelegramLongPollingCommandBot(), MessageSender {
     val parser = MessageParser.instance
     val repository = FirebaseRepository.instance
     val messageHandler = MessageHandler
-            .getInstance(this, repository, AlarmManager())
+            .getInstance(this, repository)
     val emptyMessage: Message = Message()
 
     override fun getBotUsername(): String {

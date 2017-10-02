@@ -19,21 +19,22 @@ import java.util.concurrent.TimeUnit
  * Created by NG on 05.06.17.
  */
 class MessageHandler private constructor(private val bot: MessageSender,
-                                         private val repo: Repository,
-                                         private val alarmManager: AlarmManager) {
+                                         private val repo: Repository) {
 
     private val logger = KotlinLogging.logger {}
 
     companion object {
         private var instance: MessageHandler? = null
 
-        fun getInstance(bot: MessageSender, repo: Repository, alarmManager: AlarmManager): MessageHandler {
+        fun getInstance(bot: MessageSender, repo: Repository): MessageHandler {
             if (instance == null)
-                instance = MessageHandler(bot, repo, alarmManager)
+                instance = MessageHandler(bot, repo)
 
             return instance!!
         }
     }
+
+    private var alarmManager: AlarmManager = AlarmManager(this)
 
     fun handleMessage(message: MessageFromUser) {
         val messageToSend = SendMessage()
@@ -151,18 +152,21 @@ class MessageHandler private constructor(private val bot: MessageSender,
 
             Command.ALARM -> {
                 message as MessageFromUserWithComment
-                logger.info { "alarm command: ${message.toString()}" }
+                logger.info { "alarm command: $message" }
                 logger.info { "alarm command: ${message.comment}" }
 
                 if (alarmManager.timeIsValid(message.comment)) {
+                    val timeForAlarm = alarmManager.generateTimeForNextAlarm(message.comment)
+                    logger.info { "time is correct" }
+
+                    alarmManager.setUpAlarmIn(timeForAlarm, message.chatId, !alarmManager.timeIsAfter(message.comment))
+
+                    logger.info { "time for alarm: ${Date(timeForAlarm)}" }
 
                 } else {
                     messageToSend.text = AlarmError(message.userName, message.comment).getText()
                     messageToSend.send()
                 }
-
-                messageToSend.text = "time is: ${message.comment}"
-                messageToSend.send()
             }
 
             else -> {
