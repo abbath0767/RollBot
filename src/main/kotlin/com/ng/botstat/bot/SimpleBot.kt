@@ -1,7 +1,7 @@
 package com.ng.botstat.bot
 
 import com.ng.botstat.db.FirebaseRepository
-import com.ng.botstat.model.MessageHandler
+import com.ng.botstat.model.MessageHandlerImpl
 import com.ng.botstat.model.MessageParser
 import com.ng.botstat.util.AlarmManager
 import com.ng.botstat.util.BotParams
@@ -20,8 +20,8 @@ class SimpleBot : TelegramLongPollingCommandBot(), MessageSender {
 
     val parser = MessageParser.instance
     val repository = FirebaseRepository.instance
-    val messageHandler = MessageHandler
-            .getInstance(this, repository)
+    val messageHandler = MessageHandlerImpl
+            .getInstance(this, repository, AlarmManager())
     val emptyMessage: Message = Message()
 
     override fun getBotUsername(): String {

@@ -1,11 +1,12 @@
 package com.ng.botstat.util
 
 import com.ng.botstat.model.MessageHandler
+import com.ng.botstat.model.MessageHandlerImpl
 import mu.KotlinLogging
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class AlarmManager(val messageHandler: MessageHandler) {
+class AlarmManager {
 
     private val logger = KotlinLogging.logger {}
     private var timer: Timer? = null
@@ -47,7 +48,7 @@ class AlarmManager(val messageHandler: MessageHandler) {
         return dateNow.before(dateAlarm)
     }
 
-    fun setUpAlarmIn(timeForAlarm: Long, chatId: Long, nextDay: Boolean) {
+    fun setUpAlarmIn(timeForAlarm: Long, chatId: Long, nextDay: Boolean, messageHandler: MessageHandler) {
         if (timer == null) {
             timer = Timer("my timer")
         }
