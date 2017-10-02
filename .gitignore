@@ -122,3 +122,4 @@ freeline_project_description.json
 /build/
 /src/main/res/
 /src/main/kotlin/com/ng/botstat/util/Constants.kt
+!/gradle/wrapper/gradle-wrapper.jar
