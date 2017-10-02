@@ -1,7 +1,8 @@
 package com.ng.botstat.model
 
-import com.ng.botstat.model.MessageFromUser
+import org.telegram.telegrambots.api.methods.send.SendMessage
 
 interface MessageHandler {
     fun handleMessage(message: MessageFromUser)
+    fun sendMessage(messageToSend: SendMessage)
 }
