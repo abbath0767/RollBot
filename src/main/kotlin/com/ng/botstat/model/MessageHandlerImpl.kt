@@ -62,8 +62,9 @@ class MessageHandlerImpl private constructor(private val bot: MessageSender,
             }
 
             else -> {
-                messageToSend.text = AnswerUnknown().getText()
-                messageToSend.send()
+                //ignore messages
+//                messageToSend.text = AnswerUnknown().getText()
+//                messageToSend.send()
             }
         }
     }
